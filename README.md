@@ -2,6 +2,10 @@
 
 A Model Context Protocol (MCP) server that provides tools for accessing and managing source information.
 
+<a href="https://glama.ai/mcp/servers/@rlymbur/amazon-vpc-lattice-mcp-server">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@rlymbur/amazon-vpc-lattice-mcp-server/badge" alt="Amazon VPC Lattice Server MCP server" />
+</a>
+
 ## Features
 
 The server provides two main tools:
