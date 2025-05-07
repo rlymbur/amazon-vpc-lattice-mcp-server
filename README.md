@@ -4,10 +4,12 @@ A Model Context Protocol (MCP) server that provides tools for accessing and mana
 
 ## Features
 
-The server provides two main tools:
+The server provides four main tools:
 
 1. `list_sources`: Lists all available sources with their URLs
 2. `get_source_prompts`: Gets sample prompts for a specific source
+3. `list_prompts`: Lists all available prompt templates
+4. `get_prompts`: Gets details of a specific prompt template
 
 ## Installation
 
@@ -71,6 +73,28 @@ use_mcp_tool({
 })
 ```
 
+### List Prompts
+
+```typescript
+use_mcp_tool({
+  server_name: "amazon-vpc-lattice-mcp",
+  tool_name: "list_prompts",
+  arguments: {}
+})
+```
+
+### Get Prompt Details
+
+```typescript
+use_mcp_tool({
+  server_name: "amazon-vpc-lattice-mcp",
+  tool_name: "get_prompts",
+  arguments: {
+    prompt_name: "EKS Controller Setup"
+  }
+})
+```
+
 ## Available Sources
 
 The server includes these sources:
@@ -88,6 +112,44 @@ The server includes these sources:
 - `tsconfig.json`: TypeScript configuration
 - `.gitignore`: Git ignore rules
 
+## Available Prompts
+
+The server includes these prompt templates:
+
+1. EKS Controller Setup
+   - Guide for setting up the AWS Application Networking Controller for Kubernetes
+   - Parameters: cluster_name, region, k8s_version
+
+2. EKS Controller Tests
+   - Run unit and integration tests for the AWS Application Networking Controller
+   - Parameters: test_type, test_suite, test_filter, verbosity
+   - Supports both unit tests and integration tests with e2e-clean
+
+3. EKS Controller Issue Solution
+   - Create solutions for GitHub issues with proper testing and PR creation
+   - Parameters: issue_number, branch_name
+   - Includes presubmit checks and draft PR creation
+
+4. Code Review
+   - Review code changes and provide feedback
+   - Parameters: code
+
+5. Bug Analysis
+   - Analyze error messages and suggest fixes
+   - Parameters: error, context
+
+6. Architecture Review
+   - Review system architecture and provide recommendations
+   - Parameters: design
+
+7. Documentation Generator
+   - Generate documentation for code or APIs
+   - Parameters: code
+
+8. Security Review
+   - Review code or architecture for security concerns
+   - Parameters: target
+
 ### Adding New Sources
 
 To add new sources, modify the `sources` array in `src/index.ts`:
@@ -103,6 +165,22 @@ const sources = [
     ]
   }
   // ... existing sources
+];
+```
+
+### Adding New Prompts
+
+To add new prompt templates, modify the `prompts` array in `src/index.ts`:
+
+```typescript
+const prompts = [
+  {
+    name: 'Your Prompt Template',
+    description: 'Description of what the prompt does',
+    template: 'Your prompt template with {parameter} placeholders',
+    parameters: ['parameter']
+  }
+  // ... existing prompts
 ];
 ```
 
