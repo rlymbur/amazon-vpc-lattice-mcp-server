@@ -4,12 +4,13 @@ A Model Context Protocol (MCP) server that provides tools for accessing and mana
 
 ## Features
 
-The server provides four main tools:
+The server provides five main tools:
 
 1. `list_sources`: Lists all available sources with their URLs
 2. `get_source_prompts`: Gets sample prompts for a specific source
 3. `list_prompts`: Lists all available prompt templates
 4. `get_prompts`: Gets details of a specific prompt template
+5. `vpc_lattice_cli`: Execute AWS CLI VPC Lattice commands for managing VPC Lattice resources
 
 ## Installation
 
@@ -91,6 +92,115 @@ use_mcp_tool({
   tool_name: "get_prompts",
   arguments: {
     prompt_name: "EKS Controller Setup"
+  }
+})
+```
+
+### VPC Lattice CLI
+
+The `vpc_lattice_cli` tool provides a programmatic interface to AWS VPC Lattice operations through the AWS CLI.
+
+#### Features
+- Supports all major VPC Lattice CLI operations
+- Accepts command arguments as JavaScript objects
+- Automatically converts camelCase parameters to CLI-style kebab-case
+- Handles boolean flags, arrays, and complex values
+- Supports AWS profiles and region configuration
+- Returns parsed JSON responses
+
+#### Available Commands
+- Service Network: create-service-network, delete-service-network, get-service-network, list-service-networks, update-service-network
+- Service: create-service, delete-service, get-service, list-services, update-service
+- Listener: create-listener, delete-listener, get-listener, list-listeners, update-listener
+- Rule: create-rule, delete-rule, get-rule, list-rules, update-rule
+- Target Group: create-target-group, delete-target-group, get-target-group, list-target-groups, update-target-group
+- Target Management: register-targets, deregister-targets, list-targets
+- Resource Tags: list-tags-for-resource, tag-resource, untag-resource
+
+#### Examples
+
+List service networks:
+```typescript
+use_mcp_tool({
+  server_name: "amazon-vpc-lattice-mcp",
+  tool_name: "vpc_lattice_cli",
+  arguments: {
+    command: "list-service-networks",
+    region: "us-west-2"
+  }
+})
+```
+
+Create a service network:
+```typescript
+use_mcp_tool({
+  server_name: "amazon-vpc-lattice-mcp",
+  tool_name: "vpc_lattice_cli",
+  arguments: {
+    command: "create-service-network",
+    args: {
+      name: "my-network",
+      authType: "NONE"
+    }
+  }
+})
+```
+
+Create a service with tags:
+```typescript
+use_mcp_tool({
+  server_name: "amazon-vpc-lattice-mcp",
+  tool_name: "vpc_lattice_cli",
+  arguments: {
+    command: "create-service",
+    args: {
+      name: "my-service",
+      serviceNetworkIdentifier: "sn-12345",
+      tags: [
+        { key: "Environment", value: "Production" }
+      ]
+    }
+  }
+})
+```
+
+Create a target group:
+```typescript
+use_mcp_tool({
+  server_name: "amazon-vpc-lattice-mcp",
+  tool_name: "vpc_lattice_cli",
+  arguments: {
+    command: "create-target-group",
+    args: {
+      name: "my-target-group",
+      type: "INSTANCE",
+      config: {
+        port: 80,
+        protocol: "HTTP",
+        healthCheck: {
+          enabled: true,
+          protocol: "HTTP",
+          path: "/health"
+        }
+      }
+    }
+  }
+})
+```
+
+Register targets:
+```typescript
+use_mcp_tool({
+  server_name: "amazon-vpc-lattice-mcp",
+  tool_name: "vpc_lattice_cli",
+  arguments: {
+    command: "register-targets",
+    args: {
+      targetGroupIdentifier: "tg-12345",
+      targets: [
+        { id: "i-1234567890abcdef0", port: 80 }
+      ]
+    }
   }
 })
 ```
