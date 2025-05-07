@@ -37,6 +37,58 @@ const sources = [
   }
 ];
 
+// Prompt templates
+const prompts = [
+  {
+    name: 'EKS Controller Setup',
+    description: 'Guide for setting up the AWS Application Networking Controller for Kubernetes',
+    template: 'Help me set up the AWS Application Networking Controller for Kubernetes with these parameters:\n\nCluster Name: {cluster_name}\nAWS Region: {region}\nKubernetes Version: {k8s_version}\n\nProvide:\n- Prerequisites check\n- Installation steps\n- Verification steps\n- Common troubleshooting tips',
+    parameters: ['cluster_name', 'region', 'k8s_version']
+  },
+  {
+    name: 'EKS Controller Tests',
+    description: 'Run unit and integration tests for the AWS Application Networking Controller',
+    template: 'Run tests for the AWS Application Networking Controller with these parameters:\n\nTest Type: {test_type} (unit|integration)\nTest Suite: {test_suite}\nTest Filter: {test_filter}\nVerbosity Level: {verbosity}\n\nProvide steps based on test type:\n\nFor Unit Tests:\n- Test environment setup\n- Test execution steps (make test)\n- Test results analysis\n- Coverage report summary\n- Debugging tips for failed tests\n\nFor Integration Tests:\n1. Controller Management:\n   - Check and kill any existing controller process\n   - Start new controller with "make run" in a separate terminal\n\n2. Test Execution:\n   - Run "make e2e-clean" to clean up any previous test artifacts\n   - Run "make e2e-tests" in a separate terminal\n   - Monitor test progress\n   - Analyze test results\n\n3. Cleanup:\n   - Proper shutdown of controller process\n   - Collection of logs and artifacts',
+    parameters: ['test_type', 'test_suite', 'test_filter', 'verbosity']
+  },
+  {
+    name: 'EKS Controller Issue Solution',
+    description: 'Create a solution for an AWS Application Networking Controller GitHub issue',
+    template: 'Create a solution for GitHub issue #{issue_number} with these parameters:\n\nIssue: {issue_number}\nBranch Name: {branch_name}\n\nFollow these steps:\n\n1. Development Setup:\n   - Create new branch from main: git checkout -b {branch_name}\n   - Review issue requirements and acceptance criteria\n\n2. Implementation:\n   - Make necessary code changes\n   - Follow project coding standards and patterns\n   - Add comments explaining complex logic\n\n3. Testing:\n   - Add unit tests covering the changes\n   - Update existing tests if needed\n   - Run unit tests to verify: make test\n   - Run "make presubmit" to ensure all checks pass\n\n4. Documentation:\n   - Update relevant documentation\n   - Add inline code comments where needed\n   - Document any new configuration options\n\n5. Pull Request:\n   - Create draft PR using existing template\n   - Include:\n     * Issue reference: #{issue_number}\n     * Description of changes\n     * Testing performed\n     * Documentation updates\n   - Add labels: "in-progress", appropriate component tags\n   - Request reviewers based on code ownership\n\n6. Verification:\n   - Review PR diff for unintended changes\n   - Ensure all CI checks pass\n   - Self-review against PR checklist\n   - Address any initial feedback',
+    parameters: ['issue_number', 'branch_name']
+  },
+  {
+    name: 'Code Review',
+    description: 'Review code changes and provide feedback',
+    template: 'Review this code change:\n\n{code}\n\nProvide feedback on:\n- Code quality\n- Best practices\n- Potential issues\n- Suggestions for improvement',
+    parameters: ['code']
+  },
+  {
+    name: 'Bug Analysis',
+    description: 'Analyze error messages and suggest fixes',
+    template: 'Error message: {error}\n\nContext: {context}\n\nAnalyze the error and suggest potential fixes.',
+    parameters: ['error', 'context']
+  },
+  {
+    name: 'Architecture Review',
+    description: 'Review system architecture and provide recommendations',
+    template: 'Review this system architecture:\n\n{design}\n\nConsider:\n- Scalability\n- Reliability\n- Security\n- Cost optimization',
+    parameters: ['design']
+  },
+  {
+    name: 'Documentation Generator',
+    description: 'Generate documentation for code or APIs',
+    template: 'Generate documentation for:\n\n{code}\n\nInclude:\n- Overview\n- Parameters\n- Return values\n- Example usage',
+    parameters: ['code']
+  },
+  {
+    name: 'Security Review',
+    description: 'Review code or architecture for security concerns',
+    template: 'Perform a security review of:\n\n{target}\n\nCheck for:\n- Vulnerabilities\n- Best practices\n- Compliance issues',
+    parameters: ['target']
+  }
+];
+
 class SourceListServer {
   private server: Server;
 
@@ -88,6 +140,30 @@ class SourceListServer {
             required: ['source_name'],
             additionalProperties: false
           },
+        },
+        {
+          name: 'list_prompts',
+          description: 'List all available prompt templates',
+          inputSchema: {
+            type: 'object',
+            properties: {},
+            additionalProperties: false
+          },
+        },
+        {
+          name: 'get_prompts',
+          description: 'Get details of a specific prompt template',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              prompt_name: {
+                type: 'string',
+                description: 'Name of the prompt template to get'
+              }
+            },
+            required: ['prompt_name'],
+            additionalProperties: false
+          },
         }
       ],
     }));
@@ -123,6 +199,40 @@ class SourceListServer {
               {
                 type: 'text',
                 text: JSON.stringify(source.prompts, null, 2)
+              }
+            ]
+          };
+        }
+
+        case 'list_prompts':
+          return {
+            content: [
+              {
+                type: 'text',
+                text: JSON.stringify(prompts.map(p => ({
+                  name: p.name,
+                  description: p.description
+                })), null, 2)
+              }
+            ]
+          };
+
+        case 'get_prompts': {
+          const { prompt_name } = request.params.arguments as { prompt_name: string };
+          const prompt = prompts.find(p => p.name === prompt_name);
+          
+          if (!prompt) {
+            throw new McpError(
+              ErrorCode.InvalidParams,
+              `Prompt template not found: ${prompt_name}`
+            );
+          }
+
+          return {
+            content: [
+              {
+                type: 'text',
+                text: JSON.stringify(prompt, null, 2)
               }
             ]
           };
