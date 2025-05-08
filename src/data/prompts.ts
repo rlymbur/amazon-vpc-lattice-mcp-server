@@ -1,5 +1,11 @@
 export const prompts = [
   {
+    name: 'create_github_pr',
+    description: 'Create a GitHub pull request from current branch to main',
+    template: '1. Get the current branch name using "git rev-parse --abbrev-ref HEAD"\n2. Push the current branch to remote using "git push -u origin $(git rev-parse --abbrev-ref HEAD)"\n3. Use the GitHub MCP server to:\n   - Get the PR template content from PULL_REQUEST_TEMPLATE.md in aws/aws-application-networking-k8s main branch\n   - Create a pull request from the current branch to main branch on aws/aws-application-networking-k8s using the template content',
+    parameters: []
+  },
+  {
     name: 'setup_eks_controller',
     description: 'Guide for setting up the AWS Application Networking Controller for Kubernetes',
     template: 'Help me set up the AWS Application Networking Controller for Kubernetes with these parameters:\n\nCluster Name: {cluster_name}\nAWS Region: {region}\nKubernetes Version: {k8s_version}\n\nProvide:\n- Prerequisites check\n- Installation steps\n- Verification steps\n- Common troubleshooting tips',
@@ -14,7 +20,7 @@ export const prompts = [
   {
     name: 'eks_controller_issue_solution',
     description: 'Create a solution for an AWS Application Networking Controller GitHub issue',
-    template: '1. Review issue_number and provide a summary of the proposed code changes. Ask the user if they would like to proceed. If they have not chosen to proceed, stop here.\n2. Create a new branch locally for the current repo.\n3. Proceed with the code changes.\n4. Create unit tests based on the diff of changes.\n5. Use the run_eks_controller_tests prompt to confirm code changes.\n6. Commit the changes to the local branch.',
+    template: '1. Review issue_number and provide a summary of the proposed code changes. Ask the user if they would like to proceed. If they have not chosen to proceed, stop here.\n2. Create a new branch locally for the current repo. Do not use the GitHub MCP server to create this branch remotely.\n3. Proceed with the code changes.\n4. Create unit tests based on the diff of changes.\n5. Use the run_eks_controller_tests prompt from the amazon-vpc-lattice-mcp-server to confirm code changes if required.\n6. Commit the changes to the local branch.',
     parameters: ['issue_number']
   },
   {

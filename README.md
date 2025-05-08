@@ -256,6 +256,11 @@ The server includes these prompt templates:
    - Review code or architecture for security concerns
    - Parameters: target
 
+9. Create GitHub PR
+   - Push current branch and create PR to main branch
+   - Automatically uses PULL_REQUEST_TEMPLATE.md
+   - Parameters: none
+
 ### Adding New Sources
 
 To add new sources, modify the `sources` array in `src/data/sources.ts`:
