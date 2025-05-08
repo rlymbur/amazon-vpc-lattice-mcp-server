@@ -217,7 +217,13 @@ The server includes these sources:
 
 ### Project Structure
 
-- `src/index.ts`: Main server implementation
+The project is organized into several modules:
+
+- `src/index.ts`: Main server setup and initialization
+- `src/tools.ts`: Tool definitions and handlers
+- `src/data/`
+  - `sources.ts`: Source definitions and their prompts
+  - `prompts.ts`: Prompt templates and parameters
 - `package.json`: Project configuration and dependencies
 - `tsconfig.json`: TypeScript configuration
 - `.gitignore`: Git ignore rules
@@ -262,10 +268,10 @@ The server includes these prompt templates:
 
 ### Adding New Sources
 
-To add new sources, modify the `sources` array in `src/index.ts`:
+To add new sources, modify the `sources` array in `src/data/sources.ts`:
 
 ```typescript
-const sources = [
+export const sources = [
   {
     name: 'Your Source',
     url: 'https://your-source-url.com',
@@ -280,10 +286,10 @@ const sources = [
 
 ### Adding New Prompts
 
-To add new prompt templates, modify the `prompts` array in `src/index.ts`:
+To add new prompt templates, modify the `prompts` array in `src/data/prompts.ts`:
 
 ```typescript
-const prompts = [
+export const prompts = [
   {
     name: 'Your Prompt Template',
     description: 'Description of what the prompt does',
