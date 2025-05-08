@@ -188,23 +188,6 @@ use_mcp_tool({
 })
 ```
 
-Register targets:
-```typescript
-use_mcp_tool({
-  server_name: "amazon-vpc-lattice-mcp",
-  tool_name: "vpc_lattice_cli",
-  arguments: {
-    command: "register-targets",
-    args: {
-      targetGroupIdentifier: "tg-12345",
-      targets: [
-        { id: "i-1234567890abcdef0", port: 80 }
-      ]
-    }
-  }
-})
-```
-
 ## Available Sources
 
 The server includes these sources:
@@ -213,9 +196,11 @@ The server includes these sources:
    - Key features queries
    - Configuration guidance
    - Best practices
+
 2. AWS Gateway API Controller for VPC Lattice (aws/aws-application-networking-k8s)
    - Feature support queries
    - Issue tracking
+
 3. Kubernetes Gateway API (gateway-api.sigs.k8s.io)
    - Error resolution
    - Best practices guidance
@@ -239,21 +224,21 @@ The project is organized into several modules:
 
 The server includes these prompt templates:
 
-1. Review GitHub PR
-   - Comprehensive code review of pull requests
-   - Parameters: pr_url
-
-2. Setup EKS Controller
+1. Setup EKS Controller
    - Guide for setting up the AWS Application Networking Controller for Kubernetes
    - Parameters: cluster_name, region, k8s_version
 
-3. Run EKS Controller Tests
+2. Run EKS Controller Tests
    - Run unit and integration tests
    - Parameters: test_type, test_focus
 
-4. EKS Controller Issue Solution
+3. EKS Controller Issue Solution
    - Create solutions for GitHub issues
-   - Parameters: issue_number, branch_name, working_repo
+   - Parameters: issue_number
+
+4. Review GitHub PR
+   - Comprehensive code review of pull requests
+   - Parameters: pr_url
 
 5. Bug Analysis
    - Analyze error messages and suggest fixes
