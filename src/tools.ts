@@ -123,6 +123,22 @@ export const tools = [
       required: ['command'],
       additionalProperties: false
     }
+  },
+  {
+    name: 'run_eks_controller_tests',
+    description: 'Run unit and integration tests for the AWS Application Networking Controller',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        test_type: {
+          type: 'string',
+          description: 'Type of test to run (unit or integration)',
+          enum: ['unit', 'integration']
+        }
+      },
+      required: [],
+      additionalProperties: false
+    }
   }
 ];
 
@@ -275,6 +291,233 @@ export async function handleToolCall(request: CallToolRequest): Promise<ToolResp
           ));
         });
       });
+    }
+
+    case 'run_eks_controller_tests': {
+      const { test_type } = request.params.arguments as {
+        test_type?: 'unit' | 'integration';
+      };
+
+      const { spawn } = await import('child_process');
+
+      // If no test type specified, run both unit and integration tests
+      if (!test_type) {
+        // First run unit tests
+        const unitTestProcess = spawn('make', ['test']);
+        
+        return new Promise((resolve, reject) => {
+          let unitStdout = '';
+          let unitStderr = '';
+          let integrationStdout = '';
+          let integrationStderr = '';
+
+          unitTestProcess.stdout.on('data', (data) => {
+            unitStdout += data.toString();
+          });
+
+          unitTestProcess.stderr.on('data', (data) => {
+            unitStderr += data.toString();
+          });
+
+          unitTestProcess.on('close', async (unitCode) => {
+            if (unitCode !== 0) {
+              reject(new McpError(
+                ErrorCode.InternalError,
+                `Unit tests failed: ${unitStderr}`
+              ));
+              return;
+            }
+
+            // After unit tests pass, run integration tests
+            try {
+              // Kill any existing make run process
+              const { execSync } = await import('child_process');
+              try {
+                execSync('pkill -f "make run"');
+              } catch (error) {
+                // Ignore error if no process found
+              }
+
+              // Start controller
+              const controllerProcess = spawn('make', ['run']);
+
+              // Start e2e tests
+              const integrationTestProcess = spawn('bash', ['-c', 'make e2e-clean && make e2e-test']);
+
+              integrationTestProcess.stdout.on('data', (data) => {
+                integrationStdout += data.toString();
+              });
+
+              integrationTestProcess.stderr.on('data', (data) => {
+                integrationStderr += data.toString();
+              });
+
+              integrationTestProcess.on('close', (integrationCode) => {
+                // Kill controller process
+                if (controllerProcess.pid) {
+                  process.kill(controllerProcess.pid);
+                }
+
+                if (integrationCode !== 0) {
+                  reject(new McpError(
+                    ErrorCode.InternalError,
+                    `Integration tests failed: ${integrationStderr}`
+                  ));
+                  return;
+                }
+
+                resolve({
+                  content: [
+                    {
+                      type: 'text',
+                      text: `Unit Tests Output:\n${unitStdout}\n\nIntegration Tests Output:\n${integrationStdout}`
+                    }
+                  ]
+                });
+              });
+
+              integrationTestProcess.on('error', (error) => {
+                // Kill controller process
+                if (controllerProcess.pid) {
+                  process.kill(controllerProcess.pid);
+                }
+
+                reject(new McpError(
+                  ErrorCode.InternalError,
+                  `Failed to execute integration tests: ${error.message}`
+                ));
+              });
+
+            } catch (error) {
+              reject(new McpError(
+                ErrorCode.InternalError,
+                `Failed to start integration tests: ${(error as Error).message}`
+              ));
+            }
+          });
+
+          unitTestProcess.on('error', (error) => {
+            reject(new McpError(
+              ErrorCode.InternalError,
+              `Failed to execute unit tests: ${error.message}`
+            ));
+          });
+        });
+      }
+      
+      // For unit tests only
+      if (test_type === 'unit') {
+        const testProcess = spawn('make', ['test']);
+
+        return new Promise((resolve, reject) => {
+          let stdout = '';
+          let stderr = '';
+
+          testProcess.stdout.on('data', (data) => {
+            stdout += data.toString();
+          });
+
+          testProcess.stderr.on('data', (data) => {
+            stderr += data.toString();
+          });
+
+          testProcess.on('close', (code) => {
+            if (code !== 0) {
+              reject(new McpError(
+                ErrorCode.InternalError,
+                `Unit tests failed: ${stderr}`
+              ));
+              return;
+            }
+
+            resolve({
+              content: [
+                {
+                  type: 'text',
+                  text: stdout
+                }
+              ]
+            });
+          });
+
+          testProcess.on('error', (error) => {
+            reject(new McpError(
+              ErrorCode.InternalError,
+              `Failed to execute unit tests: ${error.message}`
+            ));
+          });
+        });
+      }
+      
+      // For integration tests, need to manage controller process
+      if (test_type === 'integration') {
+        // Kill any existing make run process
+        const { execSync } = await import('child_process');
+        try {
+          execSync('pkill -f "make run"');
+        } catch (error) {
+          // Ignore error if no process found
+        }
+
+        // Start controller in first terminal
+        const controllerProcess = spawn('make run');
+        
+        // Start e2e tests in second terminal
+        const testTerminal = spawn('bash', ['-c', 'make e2e-clean && make e2e-test'], {
+          env: {
+            ...process.env
+          }
+        });
+
+        return new Promise((resolve, reject) => {
+          let stdout = '';
+          let stderr = '';
+
+          testTerminal.stdout.on('data', (data) => {
+            stdout += data.toString();
+          });
+
+          testTerminal.stderr.on('data', (data) => {
+            stderr += data.toString();
+          });
+
+          testTerminal.on('close', async (code) => {
+            // Kill controller process
+            if (controllerProcess.pid) {
+              process.kill(controllerProcess.pid);
+            }
+
+            if (code !== 0) {
+              reject(new McpError(
+                ErrorCode.InternalError,
+                `Integration tests failed: ${stderr}`
+              ));
+              return;
+            }
+
+            resolve({
+              content: [
+                {
+                  type: 'text',
+                  text: stdout
+                }
+              ]
+            });
+          });
+
+          testTerminal.on('error', async (error) => {
+            // Kill controller process
+            if (controllerProcess.pid) {
+              process.kill(controllerProcess.pid);
+            }
+
+            reject(new McpError(
+              ErrorCode.InternalError,
+              `Failed to execute integration tests: ${error.message}`
+            ));
+          });
+        });
+      }
     }
 
     default:
