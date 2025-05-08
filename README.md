@@ -1,6 +1,6 @@
 # Amazon VPC Lattice MCP Server
 
-A Model Context Protocol (MCP) server that provides tools for accessing and managing AWS VPC Lattice resources and related documentation.
+A Model Context Protocol (MCP) server for source listing, providing tools for accessing and managing AWS VPC Lattice resources and related documentation.
 
 ## Features
 
@@ -8,8 +8,8 @@ The server provides five main tools:
 
 1. `list_sources`: Lists all available sources with their URLs and sample prompts
 2. `get_source_prompts`: Gets sample prompts for a specific source
-3. `list_prompts`: Lists all available prompt templates
-4. `get_prompts`: Gets details of a specific prompt template
+3. `list_amazon_vpc_lattice_prompts`: Lists all available prompt templates
+4. `get_amazon_vpc_lattice_prompts`: Gets details of a specific prompt template
 5. `vpc_lattice_cli`: Execute AWS CLI VPC Lattice commands for managing VPC Lattice resources
 
 ## Installation
@@ -74,22 +74,22 @@ use_mcp_tool({
 })
 ```
 
-### List Prompts
+### List Amazon VPC Lattice Prompts
 
 ```typescript
 use_mcp_tool({
   server_name: "amazon-vpc-lattice-mcp",
-  tool_name: "list_prompts",
+  tool_name: "list_amazon_vpc_lattice_prompts",
   arguments: {}
 })
 ```
 
-### Get Prompt Details
+### Get Amazon VPC Lattice Prompt Details
 
 ```typescript
 use_mcp_tool({
   server_name: "amazon-vpc-lattice-mcp",
-  tool_name: "get_prompts",
+  tool_name: "get_amazon_vpc_lattice_prompts",
   arguments: {
     prompt_name: "setup_eks_controller"
   }
@@ -253,7 +253,7 @@ The server includes these prompt templates:
 
 4. EKS Controller Issue Solution
    - Create solutions for GitHub issues
-   - Parameters: issue_number, branch_name
+   - Parameters: issue_number, branch_name, working_repo
 
 5. Bug Analysis
    - Analyze error messages and suggest fixes

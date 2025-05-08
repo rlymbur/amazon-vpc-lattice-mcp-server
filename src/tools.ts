@@ -38,7 +38,7 @@ export const tools = [
     },
   },
   {
-    name: 'list_prompts',
+    name: 'list_amazon_vpc_lattice_prompts',
     description: 'List all available prompt templates',
     inputSchema: {
       type: 'object',
@@ -47,7 +47,7 @@ export const tools = [
     },
   },
   {
-    name: 'get_prompts',
+    name: 'get_amazon_vpc_lattice_prompts',
     description: 'Get details of a specific prompt template',
     inputSchema: {
       type: 'object',
@@ -162,7 +162,7 @@ export async function handleToolCall(request: CallToolRequest): Promise<ToolResp
       };
     }
 
-    case 'list_prompts':
+    case 'list_amazon_vpc_lattice_prompts':
       return {
         content: [
           {
@@ -175,7 +175,7 @@ export async function handleToolCall(request: CallToolRequest): Promise<ToolResp
         ]
       };
 
-    case 'get_prompts': {
+    case 'get_amazon_vpc_lattice_prompts': {
       const { prompt_name } = request.params.arguments as { prompt_name: string };
       const prompt = prompts.find(p => p.name === prompt_name);
       
