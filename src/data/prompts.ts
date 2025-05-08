@@ -1,5 +1,11 @@
 export const prompts = [
   {
+    name: 'review_github_pr',
+    description: 'Perform a comprehensive code review of a GitHub pull request',
+    template: 'Perform a code review for: {pr_url}\n\nReview Checklist:\n\n1. Code Quality\n   - Clean and maintainable code\n   - Follows project conventions\n   - No code smells or anti-patterns\n   - Proper error handling\n   - Performance considerations\n\n2. Testing\n   - Adequate test coverage\n   - Test cases cover edge cases\n   - Integration test considerations\n   - Test documentation\n\n3. Security\n   - No security vulnerabilities\n   - Secure coding practices\n   - Proper input validation\n   - Authentication/authorization checks\n\n4. Documentation\n   - Clear inline comments\n   - Updated README/docs\n   - API documentation if applicable\n   - Architecture changes documented\n\n5. Design\n   - Follows SOLID principles\n   - Appropriate abstractions\n   - Interface consistency\n   - Scalability considerations\n\n6. Dependencies\n   - Proper version management\n   - No conflicting dependencies\n   - Security of dependencies\n\nProvide specific recommendations for improvements in each area.',
+    parameters: ['pr_url']
+  },
+  {
     name: 'setup_eks_controller',
     description: 'Guide for setting up the AWS Application Networking Controller for Kubernetes',
     template: 'Help me set up the AWS Application Networking Controller for Kubernetes with these parameters:\n\nCluster Name: {cluster_name}\nAWS Region: {region}\nKubernetes Version: {k8s_version}\n\nProvide:\n- Prerequisites check\n- Installation steps\n- Verification steps\n- Common troubleshooting tips',
