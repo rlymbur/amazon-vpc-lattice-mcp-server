@@ -50,7 +50,7 @@ Add the server to your MCP settings file (located at `~/Library/Application Supp
 
 ## Usage
 
-Once configured, you can use the MCP tools in your conversations:
+Once configured, you can use the MCP tools in your conversations. Note that you should use `list_amazon_vpc_lattice_prompts` to discover available prompts as these are not automatically discoverable like tools.
 
 ### List Sources
 
