@@ -1,11 +1,5 @@
 export const prompts = [
   {
-    name: 'review_github_pr',
-    description: 'Perform a comprehensive code review of a GitHub pull request',
-    template: 'Perform a code review for: {pr_url}\n\nReview Checklist:\n\n1. Code Quality\n   - Clean and maintainable code\n   - Follows project conventions\n   - No code smells or anti-patterns\n   - Proper error handling\n   - Performance considerations\n\n2. Testing\n   - Adequate test coverage\n   - Test cases cover edge cases\n   - Integration test considerations\n   - Test documentation\n\n3. Security\n   - No security vulnerabilities\n   - Secure coding practices\n   - Proper input validation\n   - Authentication/authorization checks\n\n4. Documentation\n   - Clear inline comments\n   - Updated README/docs\n   - API documentation if applicable\n   - Architecture changes documented\n\n5. Design\n   - Follows SOLID principles\n   - Appropriate abstractions\n   - Interface consistency\n   - Scalability considerations\n\n6. Dependencies\n   - Proper version management\n   - No conflicting dependencies\n   - Security of dependencies\n\nProvide specific recommendations for improvements in each area.',
-    parameters: ['pr_url']
-  },
-  {
     name: 'setup_eks_controller',
     description: 'Guide for setting up the AWS Application Networking Controller for Kubernetes',
     template: 'Help me set up the AWS Application Networking Controller for Kubernetes with these parameters:\n\nCluster Name: {cluster_name}\nAWS Region: {region}\nKubernetes Version: {k8s_version}\n\nProvide:\n- Prerequisites check\n- Installation steps\n- Verification steps\n- Common troubleshooting tips',
@@ -20,8 +14,14 @@ export const prompts = [
   {
     name: 'eks_controller_issue_solution',
     description: 'Create a solution for an AWS Application Networking Controller GitHub issue',
-    template: 'Ask the user for their working repo. This is the repo a branch will be created from and committed to before creating a pull request into the original repo. Create a solution for GitHub issue #{issue_number} with these parameters:\n\nIssue: {issue_number}\nBranch Name: {branch_name}\n\nFollow these steps:\n\n1. Development Setup:\n- Create new branch from main from the working_repo: git checkout -b {branch_name}\n- Fetch and pull this new branch from GitHub to use locally.\n- Review issue requirements and acceptance criteria\n\n2. Implementation:\n- Make necessary code changes\n- Follow project coding standards and patterns\n- Add comments explaining complex logic\n\n3. Testing:\n- Add unit tests based on a diff of the changes\n- Update existing tests if needed\n- Execute to run_eks_controller_tests prompt to ensure all tests pass\n- Run "make presubmit" to ensure all checks pass\n\n4. Documentation:\n- Update relevant documentation\n- Add inline code comments where needed\n- Document any new configuration options\n\n5. Pull Request:\n- Create draft PR using the PULL_REQUEST_TEMPLATE.md template',
+    template: 'Ask the user for their working repo. This is the repo a branch will be created from and committed to before creating a pull request into the original repo. Create a solution for GitHub issue #{issue_number} with these parameters:\n\nIssue: {issue_number}\nBranch Name: {branch_name}\n\nFollow these steps:\n\n1. Development Setup:\n- Confirm we are in the working repo\n- Create new branch from main from the working_repo with branch_name locally\n- Review issue requirements and acceptance criteria\n\n2. Implementation:\n- Make necessary code changes\n- Follow project coding standards and patterns\n- Add comments explaining complex logic\n\n3. Testing:\n- Add unit tests based on a diff of the changes\n- Update existing tests if needed\n- Execute to run_eks_controller_tests prompt to ensure all tests pass\n- Run "make presubmit" to ensure all checks pass\n\n4. Documentation:\n- Update relevant documentation\n- Add inline code comments where needed\n- Document any new configuration options\n\n5. Pull Request:\n- Commit the local changes and push the branch to the working_repo\n- Create draft PR using the PULL_REQUEST_TEMPLATE.md template from the new remote branch into main of https://github.com/aws/aws-application-networking-k8s',
     parameters: ['issue_number', 'branch_name', 'working_repo']
+  },
+  {
+    name: 'review_github_pr',
+    description: 'Perform a comprehensive code review of a GitHub pull request',
+    template: 'Perform a code review for: {pr_url}\n\nReview Checklist:\n\n1. Code Quality\n   - Clean and maintainable code\n   - Follows project conventions\n   - No code smells or anti-patterns\n   - Proper error handling\n   - Performance considerations\n\n2. Testing\n   - Adequate test coverage\n   - Test cases cover edge cases\n   - Integration test considerations\n   - Test documentation\n\n3. Security\n   - No security vulnerabilities\n   - Secure coding practices\n   - Proper input validation\n   - Authentication/authorization checks\n\n4. Documentation\n   - Clear inline comments\n   - Updated README/docs\n   - API documentation if applicable\n   - Architecture changes documented\n\n5. Design\n   - Follows SOLID principles\n   - Appropriate abstractions\n   - Interface consistency\n   - Scalability considerations\n\n6. Dependencies\n   - Proper version management\n   - No conflicting dependencies\n   - Security of dependencies\n\nProvide specific recommendations for improvements in each area.',
+    parameters: ['pr_url']
   },
   {
     name: 'bug_analysis',

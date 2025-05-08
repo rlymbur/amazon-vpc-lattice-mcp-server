@@ -310,7 +310,3 @@ export const prompts = [
 - `npm run build`: Build the server and set executable permissions
 - `npm run watch`: Watch mode for development
 - `npm test`: Run tests (currently not implemented)
-
-## License
-
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
