@@ -1,12 +1,12 @@
 # Amazon VPC Lattice MCP Server
 
-A Model Context Protocol (MCP) server that provides tools for accessing and managing source information.
+A Model Context Protocol (MCP) server that provides tools for accessing and managing AWS VPC Lattice resources and related documentation.
 
 ## Features
 
 The server provides five main tools:
 
-1. `list_sources`: Lists all available sources with their URLs
+1. `list_sources`: Lists all available sources with their URLs and sample prompts
 2. `get_source_prompts`: Gets sample prompts for a specific source
 3. `list_prompts`: Lists all available prompt templates
 4. `get_prompts`: Gets details of a specific prompt template
@@ -16,7 +16,7 @@ The server provides five main tools:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/amazon-vpc-lattice-mcp-server.git
+git clone https://github.com/awslabs/amazon-vpc-lattice-mcp-server.git
 cd amazon-vpc-lattice-mcp-server
 ```
 
@@ -91,7 +91,7 @@ use_mcp_tool({
   server_name: "amazon-vpc-lattice-mcp",
   tool_name: "get_prompts",
   arguments: {
-    prompt_name: "EKS Controller Setup"
+    prompt_name: "setup_eks_controller"
   }
 })
 ```
@@ -210,8 +210,15 @@ use_mcp_tool({
 The server includes these sources:
 
 1. AWS Documentation (docs.aws.amazon.com)
-2. GitHub Repo for AWS Gateway API Controller for VPC Lattice (aws/aws-application-networking-k8s)
+   - Key features queries
+   - Configuration guidance
+   - Best practices
+2. AWS Gateway API Controller for VPC Lattice (aws/aws-application-networking-k8s)
+   - Feature support queries
+   - Issue tracking
 3. Kubernetes Gateway API (gateway-api.sigs.k8s.io)
+   - Error resolution
+   - Best practices guidance
 
 ## Development
 
@@ -232,37 +239,35 @@ The project is organized into several modules:
 
 The server includes these prompt templates:
 
-1. EKS Controller Setup
+1. Review GitHub PR
+   - Comprehensive code review of pull requests
+   - Parameters: pr_url
+
+2. Setup EKS Controller
    - Guide for setting up the AWS Application Networking Controller for Kubernetes
    - Parameters: cluster_name, region, k8s_version
 
-2. EKS Controller Tests
-   - Run unit and integration tests for the AWS Application Networking Controller
-   - Parameters: test_type, test_suite, test_filter, verbosity
-   - Supports both unit tests and integration tests with e2e-clean
+3. Run EKS Controller Tests
+   - Run unit and integration tests
+   - Parameters: test_type, test_focus
 
-3. EKS Controller Issue Solution
-   - Create solutions for GitHub issues with proper testing and PR creation
+4. EKS Controller Issue Solution
+   - Create solutions for GitHub issues
    - Parameters: issue_number, branch_name
-   - Includes presubmit checks and draft PR creation
-
-4. Code Review
-   - Review code changes and provide feedback
-   - Parameters: code
 
 5. Bug Analysis
    - Analyze error messages and suggest fixes
    - Parameters: error, context
 
-6. Architecture Review
+6. Review Architecture
    - Review system architecture and provide recommendations
    - Parameters: design
 
-7. Documentation Generator
+7. Generate Documentation
    - Generate documentation for code or APIs
    - Parameters: code
 
-8. Security Review
+8. Review Security
    - Review code or architecture for security concerns
    - Parameters: target
 
@@ -302,9 +307,10 @@ export const prompts = [
 
 ### Scripts
 
-- `npm run build`: Build the server
+- `npm run build`: Build the server and set executable permissions
 - `npm run watch`: Watch mode for development
+- `npm test`: Run tests (currently not implemented)
 
 ## License
 
-[Add your license information here]
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
