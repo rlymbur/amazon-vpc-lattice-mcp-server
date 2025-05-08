@@ -8,8 +8,8 @@ export const prompts = [
   {
     name: 'run_eks_controller_tests',
     description: 'Run unit and integration tests for the AWS Application Networking Controller',
-    template: 'Run tests for the AWS Application Networking Controller with these parameters:\n\nTest Type: {test_type} (unit|integration)\nTest Suite: {test_suite}\nTest Filter: {test_filter}\nVerbosity Level: {verbosity}\n\nProvide steps based on test type:\n\nFor Unit Tests:\n- Test environment setup\n- Test execution steps (make test)\n- Test results analysis\n- Coverage report summary\n- Debugging tips for failed tests\n\nFor Integration Tests:\n1. Controller Management:\n   - Check and kill any existing controller process\n   - Start new controller with "make run" in a separate terminal\n\n2. Test Execution:\n   - Run "make e2e-clean" to clean up any previous test artifacts\n   - Run "make e2e-tests" in a separate terminal\n   - Monitor test progress\n   - Analyze test results\n\n3. Cleanup:\n   - Proper shutdown of controller process\n   - Collection of logs and artifacts',
-    parameters: ['test_type', 'test_suite', 'test_filter', 'verbosity']
+    template: 'Run tests for the AWS Application Networking Controller with these parameters:\n\nTest Type: {test_type} (unit|integration)\nTest Suite: {test_suite}\nTest Filter: {test_filter}\n\nProvide steps based on test type:\n\nFor Unit Tests:\n- Test environment setup\n- Test execution steps (make test)\n- Test results analysis\n- Coverage report summary\n- Debugging tips for failed tests\n\nFor Integration Tests:\n1. Controller Management:\n   - Check and kill any existing controller process\n   - Start new controller with "make run" in a separate terminal\n\n2. Test Execution:\n   - Run "make e2e-clean" to clean up any previous test artifacts\n   - Run "make e2e-test" in a separate terminal\n   - Monitor test progress\n   - Analyze test results\n\n3. Cleanup:\n   - Proper shutdown of controller process\n   - Collection of logs and artifacts',
+    parameters: ['test_type', 'test_suite', 'test_filter']
   },
   {
     name: 'eks_controller_issue_solution',
