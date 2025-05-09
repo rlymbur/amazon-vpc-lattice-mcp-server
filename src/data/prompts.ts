@@ -22,26 +22,28 @@ export const prompts = [
         'run "make test" in the current directory and summarize the results. If test_type is integration, complete the ' +
         'following steps:/n' +
         '1. Kill any processes running in the current terminal and then run "make run".\n' +
-        '2. Open a new terminal window and run "make e2e-clean && export FOCUS=$test_focus && make e2e-test" and summarize the results.\n' +
+        '2. Open a new terminal window and run "make e2e-clean && export FOCUS=$test_focus && export SECONDARY_ACCOUNT_TEST_ROLE_ARN=$secondary_account && make e2e-test" and summarize the results.\n' +
         '3. Return to the original terminal and kill any running processes. If the test_type is not provided, run the steps described for a unit test type first, then the steps described for the integration test type.',
-    parameters: ['test_type', 'test_focus']
+    parameters: ['test_type', 'test_focus', 'secondary_account']
   },
   {
     name: 'eks_controller_issue_solution',
     description: 'Create a solution for an AWS Application Networking Controller GitHub issue',
     template:
-        '1. Request an issue_number from the user and provide a summary of the proposed code changes. Ask the user if they would like to proceed. If they have not chosen to proceed, stop here.\n' +
-        '2. Create a new branch locally by running "git checkout -b $branch_name" with an appropriate branch name.\n' +
-        '3. Proceed with the code changes using best practices. Ask the user for clarification if required.\n' +
-        '4. Create unit tests based on the diff of changes.\n' +
-        '5. Commit the changes to the local branch.',
+        'Create a solution for an AWS Application Networking Controller GitHub issue with the following steps:\n' +
+        '1. Request an issue_number from the user.\n' +
+        '2. Provide a summary of the proposed code changes. Ask the user if they would like to proceed. If they have not chosen to proceed, stop here.\n' +
+        '3. Create a new branch locally by running "git checkout -b $branch_name" with an appropriate branch name.\n' +
+        '4. Proceed with the code changes using best practices. Ask the user for clarification if required.\n' +
+        '5. Create unit tests based on the diff of changes.\n' +
+        '6. Commit the changes to the local branch.',
     parameters: ['issue_number']
   },
   {
     name: 'review_github_pr',
     description: 'Perform a comprehensive code review of a GitHub pull request',
     template:
-        'Perform a code review for: {pr_url} by providing specific recommendations for improvements in each of the following areas:' +
+        'Perform a code review for: {pr_url} by providing specific recommendations for improvements in each of the following areas:\n' +
         '1. Code Quality (Clean and maintainable code, Follows project conventions, No code smells or anti-patterns, Proper error handling, Performance considerations)\n' +
         '2. Testing (Adequate test coverage, Test cases cover edge cases, Integration test considerations, Test documentation)\n' +
         '3. Security (No security vulnerabilities, Secure coding practices, Proper input validation, Authentication/authorization checks)\n' +

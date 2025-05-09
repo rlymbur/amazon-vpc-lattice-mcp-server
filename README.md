@@ -14,6 +14,8 @@ The server provides five main tools:
 
 ## Installation
 
+This project is built with TypeScript and uses ES modules.
+
 1. Clone the repository:
 ```bash
 git clone https://github.com/awslabs/amazon-vpc-lattice-mcp-server.git
@@ -29,6 +31,8 @@ npm install
 ```bash
 npm run build
 ```
+
+The build script will compile the TypeScript code and set the appropriate executable permissions.
 
 ## Configuration
 
