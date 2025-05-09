@@ -37,7 +37,7 @@ Add the server to your MCP settings file (located at `~/Library/Application Supp
 ```json
 {
   "mcpServers": {
-    "amazon-vpc-lattice-mcp": {
+    "amazon-vpc-lattice": {
       "command": "node",
       "args": ["/path/to/amazon-vpc-lattice-mcp-server/build/index.js"],
       "disabled": false,
@@ -56,7 +56,7 @@ Once configured, you can use the MCP tools in your conversations. Note that you 
 
 ```typescript
 use_mcp_tool({
-  server_name: "amazon-vpc-lattice-mcp",
+  server_name: "amazon-vpc-lattice",
   tool_name: "list_sources",
   arguments: {}
 })
@@ -66,7 +66,7 @@ use_mcp_tool({
 
 ```typescript
 use_mcp_tool({
-  server_name: "amazon-vpc-lattice-mcp",
+  server_name: "amazon-vpc-lattice",
   tool_name: "get_source_prompts",
   arguments: {
     source_name: "AWS Documentation"
@@ -78,7 +78,7 @@ use_mcp_tool({
 
 ```typescript
 use_mcp_tool({
-  server_name: "amazon-vpc-lattice-mcp",
+  server_name: "amazon-vpc-lattice",
   tool_name: "list_amazon_vpc_lattice_prompts",
   arguments: {}
 })
@@ -88,7 +88,7 @@ use_mcp_tool({
 
 ```typescript
 use_mcp_tool({
-  server_name: "amazon-vpc-lattice-mcp",
+  server_name: "amazon-vpc-lattice",
   tool_name: "get_amazon_vpc_lattice_prompts",
   arguments: {
     prompt_name: "setup_eks_controller"
@@ -122,7 +122,7 @@ The `vpc_lattice_cli` tool provides a programmatic interface to AWS VPC Lattice 
 List service networks:
 ```typescript
 use_mcp_tool({
-  server_name: "amazon-vpc-lattice-mcp",
+  server_name: "amazon-vpc-lattice",
   tool_name: "vpc_lattice_cli",
   arguments: {
     command: "list-service-networks",
@@ -134,7 +134,7 @@ use_mcp_tool({
 Create a service network:
 ```typescript
 use_mcp_tool({
-  server_name: "amazon-vpc-lattice-mcp",
+  server_name: "amazon-vpc-lattice",
   tool_name: "vpc_lattice_cli",
   arguments: {
     command: "create-service-network",
@@ -149,7 +149,7 @@ use_mcp_tool({
 Create a service with tags:
 ```typescript
 use_mcp_tool({
-  server_name: "amazon-vpc-lattice-mcp",
+  server_name: "amazon-vpc-lattice",
   tool_name: "vpc_lattice_cli",
   arguments: {
     command: "create-service",
@@ -167,7 +167,7 @@ use_mcp_tool({
 Create a target group:
 ```typescript
 use_mcp_tool({
-  server_name: "amazon-vpc-lattice-mcp",
+  server_name: "amazon-vpc-lattice",
   tool_name: "vpc_lattice_cli",
   arguments: {
     command: "create-target-group",
@@ -209,57 +209,17 @@ The server includes these sources:
 
 ### Project Structure
 
-The project is organized into several modules:
+The project is organized as follows:
 
 - `src/index.ts`: Main server setup and initialization
 - `src/tools.ts`: Tool definitions and handlers
-- `src/data/`
-  - `sources.ts`: Source definitions and their prompts
+- `src/data/`: Data files
   - `prompts.ts`: Prompt templates and parameters
+  - `sources.ts`: Source definitions and their prompts
 - `package.json`: Project configuration and dependencies
 - `tsconfig.json`: TypeScript configuration
 - `.gitignore`: Git ignore rules
-
-## Available Prompts
-
-The server includes these prompt templates:
-
-1. Setup EKS Controller
-   - Guide for setting up the AWS Application Networking Controller for Kubernetes
-   - Parameters: cluster_name, region, k8s_version
-
-2. Run EKS Controller Tests
-   - Run unit and integration tests
-   - Parameters: test_type, test_focus
-
-3. EKS Controller Issue Solution
-   - Create solutions for GitHub issues
-   - Parameters: issue_number
-
-4. Review GitHub PR
-   - Comprehensive code review of pull requests
-   - Parameters: pr_url
-
-5. Bug Analysis
-   - Analyze error messages and suggest fixes
-   - Parameters: error, context
-
-6. Review Architecture
-   - Review system architecture and provide recommendations
-   - Parameters: design
-
-7. Generate Documentation
-   - Generate documentation for code or APIs
-   - Parameters: code
-
-8. Review Security
-   - Review code or architecture for security concerns
-   - Parameters: target
-
-9. Create GitHub PR
-   - Push current branch and create PR to main branch
-   - Automatically uses PULL_REQUEST_TEMPLATE.md
-   - Parameters: none
+- `build/`: Compiled JavaScript output
 
 ### Adding New Sources
 
