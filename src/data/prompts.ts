@@ -31,11 +31,11 @@ export const prompts = [
     description: 'Create a solution for an AWS Application Networking Controller GitHub issue',
     template:
         'Create a solution for an AWS Application Networking Controller GitHub issue with the following steps:\n' +
-        '1. Request an issue_number from the user.\n' +
+        '1. Request an issue_number from the user. Use the GitHub get_issue tool to understand the issue.\n' +
         '2. Provide a summary of the proposed code changes. Ask the user if they would like to proceed. If they have not chosen to proceed, stop here.\n' +
         '3. Create a new branch locally by running "git checkout -b $branch_name" with an appropriate branch name.\n' +
         '4. Proceed with the code changes using best practices. Ask the user for clarification if required.\n' +
-        '5. Create unit tests based on the diff of changes.\n' +
+        '5. Ask the user if they would like to create unit tests based on the diff of changes.\n' +
         '6. Commit the changes to the local branch.',
     parameters: ['issue_number']
   },
