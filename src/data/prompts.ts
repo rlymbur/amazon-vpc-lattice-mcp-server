@@ -36,7 +36,7 @@ export const prompts = [
         '3. Create a new branch locally by running "git checkout -b $branch_name" with an appropriate branch name.\n' +
         '4. Proceed with the code changes using best practices. Ask the user for clarification if required.\n' +
         '5. Ask the user if they would like to create unit tests based on the diff of changes. Append these tests to the existing test file if applicable.\n' +
-        '6. Before commiting changes to the local branch, run "make presubmit" to confirm unit tests pass.',
+        '6. Before commiting changes to the local branch, run "source ~/.bashrc && make presubmit" to confirm unit tests pass.',
     parameters: ['issue_number']
   },
   {
