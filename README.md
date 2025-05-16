@@ -14,7 +14,7 @@ The server provides five main tools:
 
 ## Installation
 
-This project is built with TypeScript and uses ES modules.
+This project is built with TypeScript and uses ES modules. Note that installing [github-mcp-server](https://github.com/github/github-mcp-server) is also strongly recommended to assist with development prompts.
 
 1. Clone the repository:
 ```bash
