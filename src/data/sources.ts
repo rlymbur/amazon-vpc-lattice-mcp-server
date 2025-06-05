@@ -9,6 +9,16 @@ export const sources = [
     ]
   },
   {
+    name: 'AWS VPC Lattice CLI Command Reference',
+    url: 'https://docs.aws.amazon.com/cli/latest/reference/vpc-lattice/',
+    prompts: [
+      'Which functions are most similar of {function}?',
+      'What parameters do I need to include for {function}',
+      'Am I syntactically correct for AWS CLI to use {function}'
+      
+    ]
+  },
+  {
     name: 'AWS Gateway API Controller for VPC Lattice',
     url: 'https://github.com/aws/aws-application-networking-k8s',
     prompts: [

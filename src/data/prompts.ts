@@ -18,7 +18,7 @@ export const prompts = [
     name: 'setup_vpc_lattice_application',
     description: 'Interactive guide to set up a VPC Lattice application based on user requirements',
     template: `
-      1. Analyze requirements and generate diagram showing:
+      1. Analyze requirements and generate ASCII diagram showing:
          - Service Network structure
          - Services and their relationships
          - Target groups and listeners
@@ -30,7 +30,7 @@ export const prompts = [
            options: ["Yes, proceed", "No, let's modify the plan"]
          }
       
-      3. Resource creation (for each component):
+      3. Resource creation (for each component, check sources to look up the command on the AWS Lattice CLI Command Reference so you don't make mistakes):
          - Service Network
          - Services
          - Target Groups
@@ -42,41 +42,17 @@ export const prompts = [
            options: ["Yes", "Modify configuration", "Skip this resource"]
          }
          - Execute approved commands using vpc_lattice_cli
+         - If command fails, you should look through the sources and find AWS VPC Lattice CLI Command Reference
       
       4. Verification:
          - List created resources using vpc_lattice_cli list commands
          - Show connection/usage instructions
     `,
     parameters: [
-      'application_description',  // Required: User's description of their application needs
-      'auth_type',               // Optional: AWS_IAM (default) or NONE
-      'region',                  // Optional: AWS region
-      'app_name'                 // Optional: Base name for resources (default: generated from description)
-    ]
-  },
-  {
-    name: 'setup_vpc_lattice_application1',
-    description: 'Interactive guide to set up a VPC Lattice application based on user requirements',
-    template: `
-      1. Analyze application requirements and propose VPC Lattice architecture
-      2a. Analyze requirements, propose architecture and generate diagram for user
-      2b. Ask user: {
-        question: "Do you want to proceed with this architecture?",
-        options: ["Yes, proceed", "No, modify the plan"]
-      }
-      2c. For each resource creation:
-        - Present the command and configuration
-        - Ask user: {
-          question: "Do you want to create [resource]?",
-          options: ["Approve", "Modify", "Cancel"]
-        }
-        - Execute step-by-step VPC Lattice resource creation with user approval
-      3. Verify deployment in AWS console
-    `,
-    parameters: [
       'application_description',
-      'auth_type',  // Optional, defaults to AWS_IAM
-      'region'      // Optional, uses default AWS region if not specified
+      'auth_type',               
+      'region',                  
+      'app_name'                 
     ]
   },
 
