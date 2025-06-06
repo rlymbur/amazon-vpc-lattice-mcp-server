@@ -208,6 +208,10 @@ The server includes these sources:
 3. Kubernetes Gateway API (gateway-api.sigs.k8s.io)
    - Error resolution
    - Best practices guidance
+4. AWS VPC Lattice CLI Command Reference (docs.aws.amazon.com/cli/latest/reference/vpc-lattice/)
+   - Function similarity queries
+   - Parameter requirements
+   - CLI syntax validation
 
 ## Development
 
