@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/rlymbur-amazon-vpc-lattice-mcp-server-badge.png)](https://mseep.ai/app/rlymbur-amazon-vpc-lattice-mcp-server)
+
 # Amazon VPC Lattice MCP Server
 
 A Model Context Protocol (MCP) server for source listing, providing tools for accessing and managing AWS VPC Lattice resources and related documentation.
